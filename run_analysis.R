@@ -14,27 +14,41 @@ prepareData <- function(subjectFile, xFile, yFile, featureData = features, activ
   subjectData <- read.table(subjectFile); 
   xData       <- read.table(xFile); 
   yData       <- read.table(yFile);
-  yDataNames  <- activities[,2][yData$V1] # a bit funky - could also merge
   
-  # naming columns - use feature set for the heavy lifting
-  names(subjectData) <- 'SubjectId';
-  names(xData) <- featureData[,2];
+  # step 3: Uses descriptive activity names to name the activities in the data set
+  # ------------------------------------------------------------------------------
+  yNamedData <- merge(yData, activities, by="V1") 
   
+  # step 4: Appropriately lagels the data set with descriptive variable names
+  # -------------------------------------------------------------------------
+  # naming columns - use feature set for the heavy lifting 
+  # Note: the feature names are not particularly descriptive, but they're the best I've got
+  colnames(subjectData) <- 'SubjectId';
+  colnames(xData) <- featureData[,2];
+  colnames(yNamedData) <- c('ActivityId', 'ActivityName');
+  
+  # Step 2: Extracts only the measurements on the mean and standard deviation for each measurement
+  # ----------------------------------------------------------------------------------------------
   # assuming that all features with mean()/std() in the name are a mean,std of that feature, i.e. that
   # tBodyAcc-mean()-X is actually tBodyAcc-X - mean
   # the alternative is to grep only on names *ending* with mean()/std()
   mean_std_cols <- grepl("mean()", names(xData)) | grepl( "std()", names(xData))
-  names(yDataNames) <- 'Activity';
+
   
   # combine the data into a single table
-  dataTrain <- cbind(subjectData, yDataNames, xData[,mean_std_cols]);
+  dataTrain <- cbind(subjectData,ActivityName=yNamedData$ActivityName, xData[,mean_std_cols]);
 }
 
 
 dataTrain <- prepareData('train/subject_train.txt', 'train/x_train.txt', 'train/y_train.txt', features, activityType)
 dataTest <- prepareData('test/subject_test.txt', 'test/x_test.txt', 'test/y_test.txt', features, activityType)
 
-
-
+# Step 1: Merging the two sets
+# ----------------------------
 allData <- rbind(dataTrain, dataTest)
+
+
+# Step 5: From the data set in step 4, create a second independent tidy data set with the 
+#         average of each variable for each actibity and each subject.
+# ---------------------------------------------------------------------------------------
 
