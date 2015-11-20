@@ -33,7 +33,8 @@ prepareData <- function(subjectFile, xFile, yFile, featureData = features, activ
   # assuming that all features with mean()/std() in the name are a mean,std of that feature, i.e. that
   # tBodyAcc-mean()-X is actually tBodyAcc-X - mean
   # the alternative is to grep only on names *ending* with mean()/std()
-  mean_std_cols <- grepl("mean()", names(xData)) | grepl( "std()", names(xData))
+  # this selection ignores meanFreq() values
+  mean_std_cols <- grepl("mean\\()", names(xData)) | grepl( "std\\()", names(xData))
 
   
   # combine the data into a single table
@@ -59,9 +60,7 @@ allData <- rbind(dataTrain, dataTest)
 #  WALKING  fBodyAccJerk-std()-X       -0.999
 #  SITTING  fBodyAccJerk-meanFreq()-X   0.23556
 
-library(tidyr)
+library(reshape2)
 
-# first drop the subject ID - we no longer care about that
-subjectlessData <- allData[, 2:81]
-tidyRaw <- gather( subjectlessData, Activity, Measure,  2:80)
+tidyRaw <- melt(allData, id=c("SubjectId", "ActivityName"))
 
