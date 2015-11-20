@@ -51,16 +51,16 @@ allData <- rbind(dataTrain, dataTest)
 
 
 # Step 5: From the data set in step 4, create a second independent tidy data set with the 
-#         average of each variable for each actibity and each subject.
+#         average of each variable for each activity and each subject.
 # ---------------------------------------------------------------------------------------
 
-# data set will look like
-
-# activity   measure                    average
-#  WALKING  fBodyAccJerk-std()-X       -0.999
-#  SITTING  fBodyAccJerk-meanFreq()-X   0.23556
 
 library(reshape2)
 
-tidyRaw <- melt(allData, id=c("SubjectId", "ActivityName"))
 
+# the "raw" data is in long format
+tidyRaw <- melt(allData, id=c("SubjectId", "ActivityName"))
+# the averages data is in wide format - this is still tidy
+tidyAverages   = dcast(tidyRaw, SubjectId + ActivityName ~ variable, mean)
+
+write.table(tidyAverages, file='tidyAverages.txt', row.names=FALSE)
