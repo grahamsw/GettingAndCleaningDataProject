@@ -1,7 +1,8 @@
 
-# set working dir to where this script is - so that the
+# set working dir to Data dir - so that the
 # rest of the script finds the data files.
-setwd(dirname(sys.frame(1)$ofile))
+dir <- paste(dirname(sys.frame(1)$ofile), '/Data', sep='')
+setwd(dir)
 
 # import headers 
 features     <- read.table('features.txt', colClasses = c("numeric", "character")); 
