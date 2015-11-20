@@ -63,4 +63,4 @@ tidyRaw <- melt(allData, id=c("SubjectId", "ActivityName"))
 # the averages data is in wide format - this is still tidy
 tidyAverages   = dcast(tidyRaw, SubjectId + ActivityName ~ variable, mean)
 
-write.table(tidyAverages, file='tidyAverages.txt', row.names=FALSE)
+write.table(tidyAverages, file='../tidyAverages.txt', row.names=FALSE)
