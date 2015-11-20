@@ -52,3 +52,15 @@ allData <- rbind(dataTrain, dataTest)
 #         average of each variable for each actibity and each subject.
 # ---------------------------------------------------------------------------------------
 
+# data set will look like
+
+# activity   measure                    average
+#  WALKING  fBodyAccJerk-std()-X       -0.999
+#  SITTING  fBodyAccJerk-meanFreq()-X   0.23556
+
+library(tidyr)
+
+# first drop the subject ID - we no longer care about that
+subjectlessData <- allData[, 2:81]
+tidyRaw <- gather( subjectlessData, Activity, Measure,  2:80)
+
