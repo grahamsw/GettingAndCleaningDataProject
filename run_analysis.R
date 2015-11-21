@@ -15,18 +15,19 @@ prepareData <- function(subjectFile, xFile, yFile, featureData = features, activ
   subjectData <- read.table(subjectFile); 
   xData       <- read.table(xFile); 
   yData       <- read.table(yFile);
-  
-  # step 3: Uses descriptive activity names to name the activities in the data set
-  # ------------------------------------------------------------------------------
-  yNamedData <- merge(yData, activities, by="V1") 
+  yNames      <- activities[,2][yData$V1]
   
   # step 4: Appropriately lagels the data set with descriptive variable names
   # -------------------------------------------------------------------------
   # naming columns - use feature set for the heavy lifting 
   # Note: the feature names are not particularly descriptive, but they're the best I've got
-  colnames(subjectData) <- 'SubjectId';
-  colnames(xData) <- featureData[,2];
-  colnames(yNamedData) <- c('ActivityId', 'ActivityName');
+  names(subjectData) <- 'SubjectId';
+  names(xData) <- featureData[,2];
+  
+  # yNames is just a vector, so we name it during the cbind below
+  
+  
+  
   
   # Step 2: Extracts only the measurements on the mean and standard deviation for each measurement
   # ----------------------------------------------------------------------------------------------
@@ -38,7 +39,9 @@ prepareData <- function(subjectFile, xFile, yFile, featureData = features, activ
 
   
   # combine the data into a single table
-  dataTrain <- cbind(subjectData,ActivityName=yNamedData$ActivityName, xData[,mean_std_cols]);
+  combinedData <- cbind(subjectData, "ActivityName" = yNames, xData[,mean_std_cols]);
+  
+  
 }
 
 
