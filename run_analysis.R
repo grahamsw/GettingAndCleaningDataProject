@@ -15,15 +15,14 @@ prepareData <- function(subjectFile, xFile, yFile, featureData = features, activ
   subjectData <- read.table(subjectFile); 
   xData       <- read.table(xFile); 
   yData       <- read.table(yFile);
-  yNames      <- activities[,2][yData$V1]
+  yNames      <- activities[,2][yData$V1] # this is funky, but direct. "merge" changes the order of the records
   
-  # step 4: Appropriately lagels the data set with descriptive variable names
+  # step 4: Appropriately labels the data set with descriptive variable names
   # -------------------------------------------------------------------------
   # naming columns - use feature set for the heavy lifting 
   # Note: the feature names are not particularly descriptive, but they're the best I've got
   names(subjectData) <- 'SubjectId';
   names(xData) <- featureData[,2];
-  
   # yNames is just a vector, so we name it during the cbind below
   
   
