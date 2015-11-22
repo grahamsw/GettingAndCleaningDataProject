@@ -16,6 +16,9 @@ The variables output in the tidyAverages.txt are all averages, per user/activity
   + STANDING
   + LAYING
 * Remaining columns are averages of measures of means/standard deviations 
+All variables are included that contain "mean" or "std" in their names. There is some ambiguity as to which of these are actually means or standard deviations, I have erred on the side of inclusiveness.
+
+
 
 
 
