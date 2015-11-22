@@ -25,9 +25,6 @@ prepareData <- function(subjectFile, xFile, yFile, featureData = features, activ
   names(xData) <- featureData[,2];
   # yNames is just a vector, so we name it during the cbind below
   
-  
-  
-  
   # Step 2: Extracts only the measurements on the mean and standard deviation for each measurement
   # ----------------------------------------------------------------------------------------------
   # assuming that all features with mean()/std() in the name are a mean,std of that feature, i.e. that
@@ -36,13 +33,9 @@ prepareData <- function(subjectFile, xFile, yFile, featureData = features, activ
   # this selection ignores meanFreq() values
   mean_std_cols <- grepl("mean\\()", names(xData)) | grepl( "std\\()", names(xData))
 
-  
   # combine the data into a single table
-  combinedData <- cbind(subjectData, "ActivityName" = yNames, xData[,mean_std_cols]);
-  
-  
+  cbind(subjectData, "ActivityName" = yNames, xData[,mean_std_cols]);
 }
-
 
 dataTrain <- prepareData('train/subject_train.txt', 'train/x_train.txt', 'train/y_train.txt', features, activityType)
 dataTest <- prepareData('test/subject_test.txt', 'test/x_test.txt', 'test/y_test.txt', features, activityType)
@@ -51,14 +44,11 @@ dataTest <- prepareData('test/subject_test.txt', 'test/x_test.txt', 'test/y_test
 # ----------------------------
 allData <- rbind(dataTrain, dataTest)
 
-
 # Step 5: From the data set in step 4, create a second independent tidy data set with the 
 #         average of each variable for each activity and each subject.
 # ---------------------------------------------------------------------------------------
 
-
 library(reshape2)
-
 
 # the "raw" data is in long format
 tidyRaw <- melt(allData, id=c("SubjectId", "ActivityName"))
