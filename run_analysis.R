@@ -15,6 +15,7 @@ prepareData <- function(subjectFile, xFile, yFile, featureData = features, activ
   subjectData <- read.table(subjectFile); 
   xData       <- read.table(xFile); 
   yData       <- read.table(yFile);
+  # Srep 3: Uses descriptive activity names to name the activities in the data set
   yNames      <- activities[,2][yData$V1] # this is funky, but direct. "merge" changes the order of the records
   
   # step 4: Appropriately labels the data set with descriptive variable names
